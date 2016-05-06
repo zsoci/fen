@@ -1,0 +1,6 @@
+
+-name fen
+-setcookie fen_release
+-hidden
+-connect_all false
+

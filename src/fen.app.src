@@ -1,0 +1,26 @@
+{application, fen, [
+  {description, "Front End Node application"},
+  {id, "fen"},
+  {vsn, "0.0.1"},
+  {applications,
+    [ kernel
+    , psh
+    , lager
+%    , runtime_tools
+   , stdlib
+%    , crypto
+%    , sasl
+    , cowboy
+    , cowboy_swagger
+    , jiffy
+%    , katana
+    ]},
+  {modules, []},
+  {mod, {fen_app, []}},
+  {registered, []},
+  { start_phases
+  , [ %{create_schema, []}
+     {start_cowboy_listeners, []}
+    ]
+  }
+  ]}.
