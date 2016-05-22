@@ -1,4 +1,6 @@
 %%% @doc Main Application module
+%%%
+
 -module(fen_app).
 
 -behaviour(application).
@@ -26,7 +28,7 @@ start(_StartType, _Args) ->
 %%   {ok, _} = application:ensure_all_started(mnesia),
 %%   sumo:create_schema();
 start_phase(start_cowboy_listeners, _StartType, []) ->
-  Handlers =
+   Handlers =
     [ 
      fen_healthcheck_handler,
 %%      fen_elements_handler
@@ -42,7 +44,10 @@ start_phase(start_cowboy_listeners, _StartType, []) ->
 %  lager:debug("Routes:~p", Dispatch),
 
   TransOpts = [{port, 8082}],
-  ProtoOpts = [{env, [{dispatch, Dispatch}, {compress, true}]}],
+  ProtoOpts = [{env, [{dispatch, Dispatch}, {compress, true}]},
+               {middlewares, [fen_middleware,
+                              cowboy_router,
+                              cowboy_handler]}],
   case cowboy:start_http(fen_server, 1, TransOpts, ProtoOpts) of
     {ok, _} -> ok;
     {error, {already_started, _}} -> ok

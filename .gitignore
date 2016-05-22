@@ -4,3 +4,4 @@ log/
 tags
 rebar.lock
 gproc_dist_nonode@nohost
+/ebin/

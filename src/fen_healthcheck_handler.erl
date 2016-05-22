@@ -24,6 +24,7 @@
             delete_resource/2
           ]
         }]).
+%%-extends(fen_default_handler).
 
 -export([handle_get/2
          ]).

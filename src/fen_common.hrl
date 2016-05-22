@@ -18,4 +18,8 @@
 -define(APPLICATION_JSON, <<"application/json">>).
 
 %%% Cookies
+-define(X_HOST, <<"X_Host">>).
+-define(X_ACCESS_TOKEN, <<"X_Access_token">>).
+-define(X_DEVICE_ID, <<"X_Device">>).
+-define(X_USER_TOKEN, <<"X_User_Token">>).
 
