@@ -22,4 +22,5 @@
 -define(X_ACCESS_TOKEN, <<"X_Access_token">>).
 -define(X_DEVICE_ID, <<"X_Device">>).
 -define(X_USER_TOKEN, <<"X_User_Token">>).
+-define(X_USER_ID, <<"X_User_Id">>).
 

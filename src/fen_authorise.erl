@@ -1,8 +1,7 @@
 %% @author zsoci
 %% @doc @todo Add description to opr_auth_middleware.
 
-
--module(fen_middleware).
+-module(fen_authorise).
 
 -behaviour(cowboy_middleware).
 

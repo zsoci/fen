@@ -45,9 +45,16 @@
 %% ====================================================================
 handle_get(Req, State) ->
     {Value, Req2} = cowboy_req:qs_val(<<"verbose">>, Req, false),
-    lager:info("Verbose ~p", [Value]),
-    case Value of
-        <<"true">> ->
+    Verbose = case Value of
+                  <<"true">> ->
+                      true;
+                  <<"false">> ->
+                      false;
+                  _ ->
+                      Value
+              end,
+    case Verbose of
+        true ->
             {<<"Pong">>, Req2, State};
         _ ->
             {<<"">>, Req, State}
