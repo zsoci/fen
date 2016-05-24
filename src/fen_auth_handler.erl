@@ -148,7 +148,7 @@ trails_register() ->
 login(DecodedBody, Req, State) ->
     case maps:get(?FEN_FIELD_USER_TOKEN, DecodedBody, undefined) of
         undefined ->
-            {halt, fen_utils:cowboy_reply(404, "", Req)};
+            {halt, fen_utils:cowboy_reply(404, "", Req), State};
         Value ->
             %% we have a md5hashed user token here
             %% let us find wether we have a real entity id for it
@@ -159,7 +159,7 @@ maybe_existing_user(UserToken, DecodedBody, Req, State) ->
     lager:debug("FINDENTITY:~p.", [UserToken]),
     case um:find_user_id_by_token(UserToken) of
         {error, _Reason} ->
-            {halt, fen_utils:cowboy_reply(404, "", Req)};
+            {halt, fen_utils:cowboy_reply(404, "", Req), State};
         UserId ->
             lager:debug("FOUND:~p.", [UserId]),
             try_login_with_userid(UserId, DecodedBody, Req, State)
@@ -204,9 +204,9 @@ maybe_login_new_device(Reason, UserId, DeviceId, DecodedBody,
                        Req, Cookies, State) ->
     case Reason of
         notfound ->
-            {halt, fen_utils:cowboy_reply(404, "", Req)};
+            {halt, fen_utils:cowboy_reply(404, "", Req), State};
         badcredentials ->
-            {halt, fen_utils:cowboy_reply(401, "", Req)};
+            {halt, fen_utils:cowboy_reply(401, "", Req), State};
         missingworker ->
             login_new_device(UserId, DeviceId, Req, State);
         ELSE ->
@@ -225,7 +225,7 @@ login_new_device(UserId, DeviceId, Req, State) ->
                                   Req,
                                   State);
         ELSE ->
-            {halt, fen_utils:cowboy_reply(500, ELSE, Req)}
+            {halt, fen_utils:cowboy_reply(500, ELSE, Req), State}
     end.
 
 create_missing_worker(WorkerIdentity, ClientId, Module,
@@ -238,12 +238,12 @@ create_missing_worker(WorkerIdentity, ClientId, Module,
         {error, <<"failed">>} ->
             lager:error("Failed to create mssession entity "
                         "for identity:~p", [WorkerIdentity]),
-            {halt, fen_utils:cowboy_reply(409, "", Req)};
+            {halt, fen_utils:cowboy_reply(409, "", Req), State};
         WAFIT ->
             lager:error("Cannot create mssession entity "
                         "for identity:~p~n\nReason:~p",
                         [WorkerIdentity, WAFIT]),
-            {halt, fen_utils:cowboy_reply(500, WAFIT, Req)}
+            {halt, fen_utils:cowboy_reply(500, WAFIT, Req), State}
     end.
 
 register(DecodedBody, Req, State) ->
