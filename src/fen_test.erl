@@ -6,7 +6,7 @@
 
 -include("fen_common.hrl").
 -include_lib("psh/include/psh.hrl").
--define(URL, "http://localhost:8081").
+-define(URL, "http://localhost:8082").
 -define(LOCAL_NODE_NAME, begin {ok, HostName}=inet:gethostname(), HostName end).
 -define(APPL_JSON, "application/json").
 -define(BUCKETTYPES, ["strong", "default"]).
@@ -15,13 +15,10 @@
 %% API functions
 %% ====================================================================
 -export([login/0,
-         login_v1/0,
          register/0,
-         register_v1/0,
 %         send/0,
          list/0,
          get_entity/1,
-         get_entity_v1/1,
          pget/0,
          pget/1,
          get/1,
@@ -37,28 +34,7 @@ login() ->
         "\"password\":\"PASSWORD\"}",
 
     {ok, {{Version, Code, ReasonPhrase}, Headers, RespBody}} =
-        httpc:request(post, {?URL ++ "/v2/auth/email/login",
-                             [], ContentType, Body}, [], []),
-
-    io:format("~n~p,~p,~p, Headers:~p, Body:~p~n", [Version,
-                                             Code,
-                                             ReasonPhrase,
-                                             Headers,
-                                             RespBody]),
-    httpc:store_cookies(Headers, "/"),
-    httpc:which_cookies().
-
--spec login_v1() -> term().
-login_v1() ->
-    httpc:set_options([{cookies, enabled}]),
-    ContentType = ?APPL_JSON,
-    Body = "{\"rememberme\":false, "
-        "\"email\":\"zsociii@lamardan.com\", "
-%        "\"email\":\"flavio@inaka.net\", "
-        "\"password\":\"PASSWORD\"}",
-
-    {ok, {{Version, Code, ReasonPhrase}, Headers, RespBody}} =
-        httpc:request(post, {?URL ++ "/auth/email/login",
+        httpc:request(post, {?URL ++ "/v1/auth/login",
                              [], ContentType, Body}, [], []),
 
     io:format("~n~p,~p,~p, Headers:~p, Body:~p~n", [Version,
@@ -78,27 +54,7 @@ register() ->
         "\"password\":\"PASSWORD\"}",
 
     {ok, {{Version, Code, ReasonPhrase}, Headers, RespBody}} =
-        httpc:request(post, {?URL ++ "/v2/auth/email/register",
-                             [], ContentType, Body}, [], []),
-
-    io:format("~n~p,~p,~p, Headers:~p~nBody:~p~n", [Version,
-                                             Code,
-                                             ReasonPhrase,
-                                             Headers,
-                                             RespBody]),
-    httpc:store_cookies(Headers, "/"),
-    httpc:which_cookies().
-
--spec register_v1() -> term().
-register_v1() ->
-    httpc:set_options([{cookies, enabled}]),
-    ContentType = ?APPL_JSON,
-    Body = "{\"rememberme\":false, "
-        "\"email\":\"zsociii@lamardan.com\", "
-        "\"password\":\"PASSWORD\"}",
-
-    {ok, {{Version, Code, ReasonPhrase}, Headers, RespBody}} =
-        httpc:request(post, {?URL ++ "/auth/email/register",
+        httpc:request(post, {?URL ++ "/v1/auth/register",
                              [], ContentType, Body}, [], []),
 
     io:format("~n~p,~p,~p, Headers:~p~nBody:~p~n", [Version,
@@ -121,7 +77,7 @@ pget(SN) ->
                                   Cookies),
     [_, UUID] = string:tokens(Token, "_"),
     _Pid = proc_lib:spawn(?MODULE, get, [SN]),
-    W = fen_a_user:create_agent_identity(list_to_binary(UUID)),
+    W = um_a_user:create_agent_identity(list_to_binary(UUID)),
     Msg = #message{message = <<"This is a message">>,
                    type = persistent},
     psh:call(message, W, Msg).
@@ -151,7 +107,7 @@ get(SN) ->
     ContentType = ?APPL_JSON,
     Body = "{\"MsgSerial\":" ++ integer_to_list(SN) ++ "}",
     {ok, {{Version, Code, ReasonPhrase}, Headers, RespBody}} =
-        httpc:request(post, {?URL ++ "/v2/get",
+        httpc:request(post, {?URL ++ "/v1/get",
                              [], ContentType, Body}, [], []),
 
     io:format("~n~p,~p,~p, Headers:~p,~nBody:~p~n", [Version,
@@ -166,20 +122,7 @@ get(SN) ->
 -spec get_entity(ID :: string()) -> term().
 get_entity(Id) ->
     {ok, {{Version, Code, ReasonPhrase}, Headers, RespBody}} =
-        httpc:request(?URL ++ "/v2/entities/" ++ Id),
-    
-    io:format("~n~p,~p,~p, Headers:~p,~nBody:~p~n", [Version,
-                                             Code,
-                                             ReasonPhrase,
-                                             Headers,
-                                             RespBody]),
-    httpc:store_cookies(Headers, "/"),
-    httpc:which_cookies().
-
--spec get_entity_v1(Id :: string()) -> term().
-get_entity_v1(Id) ->
-    {ok, {{Version, Code, ReasonPhrase}, Headers, RespBody}} =
-        httpc:request(?URL ++ "/entities/" ++ Id),
+        httpc:request(?URL ++ "/v1/entities/" ++ Id),
     
     io:format("~n~p,~p,~p, Headers:~p,~nBody:~p~n", [Version,
                                              Code,

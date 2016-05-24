@@ -31,7 +31,7 @@ start_phase(start_cowboy_listeners, _StartType, []) ->
    Handlers =
     [ 
      fen_healthcheck_handler,
-%%      fen_elements_handler
+     fen_auth_handler,
 %%     , fen_single_element_handler
 %%     , fen_sessions_handler
 %%     , fen_single_session_handler
@@ -45,7 +45,7 @@ start_phase(start_cowboy_listeners, _StartType, []) ->
 
   TransOpts = [{port, 8082}],
   ProtoOpts = [{env, [{dispatch, Dispatch}, {compress, true}]},
-               {middlewares, [fen_authorise,
+               {middlewares, [fen_authorise_mw,
                               cowboy_router,
                               cowboy_handler]}],
   case cowboy:start_http(fen_server, 1, TransOpts, ProtoOpts) of

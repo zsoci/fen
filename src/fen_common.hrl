@@ -1,3 +1,5 @@
+-define(FEN_APP_NAME, fen).
+-define(FEN_APP_NAME_B, <<"fen">>).
 
 %%% HTTP COMMANDS
 -define(GET, <<"GET">>).
@@ -19,8 +21,17 @@
 
 %%% Cookies
 -define(X_HOST, <<"X_Host">>).
--define(X_ACCESS_TOKEN, <<"X_Access_token">>).
+-define(X_ACCESS_TOKEN, <<"X_Access_Token">>).
 -define(X_DEVICE_ID, <<"X_Device">>).
 -define(X_USER_TOKEN, <<"X_User_Token">>).
 -define(X_USER_ID, <<"X_User_Id">>).
 
+-type options() :: #{ path => string(),
+                      model => module(),
+                      verbose => boolean()
+                    }.
+
+-type state() :: #{ opts => options()
+                  }.
+
+-export_type([state/0, options/0]).

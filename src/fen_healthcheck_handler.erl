@@ -32,17 +32,8 @@
 -export([ trails/0
         ]).
 
--type options() :: #{ path => string()
-                    , model => module()
-                    , verbose => boolean()
-                    }.
--type state() :: #{ opts => options()
-                  }.
--export_type([state/0, options/0]).
-
-%% ====================================================================
-%% Internal functions
-%% ====================================================================
+-spec handle_get(Req :: cowboy_req:req(), State :: fen_common:state()) -> 
+          Result :: {iodata(), cowboy_req:req(), state()}.
 handle_get(Req, State) ->
     {Value, Req2} = cowboy_req:qs_val(<<"verbose">>, Req, false),
     Verbose = case Value of

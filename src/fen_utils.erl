@@ -16,6 +16,13 @@ atom_to_method(put) -> <<"PUT">>;
 atom_to_method(post) -> <<"POST">>;
 atom_to_method(delete) -> <<"DELETE">>.
 
+%% set_unauthenticated(Req) ->
+%%     Error1 = cowboy_req:set_resp_header(
+%%                <<"Www-Authenticate">>,
+%%                <<"Basic realm=\"Secure Area\"">>, Req),
+%%     _ErrorReq = cowboy_req:set_resp_body(
+%%                   unauthenticated_body(), Error1).
+
 %% ====================================================================
 %% Internal functions
 %% ====================================================================

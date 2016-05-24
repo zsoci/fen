@@ -1,6 +1,8 @@
 %%% @doc Base GET|POST /[entities] implementation
 -module(fen_default_handler).
 
+-include("fen_common.hrl").
+
 -export([ init/3,
           rest_init/2,
           allowed_methods/2,
@@ -15,14 +17,6 @@
 -export([ announce_req/2,
           handle_post/3
         ]).
-
--type options() :: #{ path => string(),
-                      model => module(),
-                      verbose => boolean()
-                    }.
--type state() :: #{ opts => options()
-                  }.
--export_type([state/0, options/0]).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Cowboy Callbacks
