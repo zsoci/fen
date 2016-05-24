@@ -12,7 +12,8 @@
 %    , sasl
     , cowboy
     , cowboy_swagger
-    , jiffy
+    , jiffy,
+    um
 %    , katana
     ]},
   {modules, []},

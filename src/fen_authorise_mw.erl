@@ -14,13 +14,6 @@
 -define(FEN_API_PATH_REGEXP_FOR_AUTH,
         "/v(1)/auth").
 
--record(cookies,{ user_token = undefined ::binary(),
-                  access_token = undefined :: binary(),
-                  device_id = undefined :: binary(),
-                  host = undefined :: binary(),
-                  user_id = undefined :: binary()
-                }).
-
 %% ====================================================================
 %% API functions
 %% ====================================================================

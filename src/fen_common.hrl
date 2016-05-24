@@ -1,6 +1,9 @@
 -define(FEN_APP_NAME, fen).
 -define(FEN_APP_NAME_B, <<"fen">>).
 
+-define(FEN_FIELD_USER_TOKEN, <<"user_token">>).
+-define(FEN_FIELD_PASSWORD, <<"password">>).
+
 %%% HTTP COMMANDS
 -define(GET, <<"GET">>).
 -define(HEAD, <<"HEAD">>).
@@ -35,3 +38,11 @@
                   }.
 
 -export_type([state/0, options/0]).
+
+-record(cookies,{ user_token = undefined ::binary(),
+                  access_token = undefined :: binary(),
+                  device_id = undefined :: binary(),
+                  host = undefined :: binary(),
+                  user_id = undefined :: binary()
+                }).
+
